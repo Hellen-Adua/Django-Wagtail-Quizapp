@@ -1,0 +1,8 @@
+<h1>Quizzes</h1>
+<ul>
+  {% for q in quizzes %}
+    <li><a href="{% url 'take_quiz' q.id %}">{{ q.title }}</a></li>
+  {% empty %}
+    <li>No quizzes yet.</li>
+  {% endfor %}
+</ul>

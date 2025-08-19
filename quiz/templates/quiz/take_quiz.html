@@ -1,0 +1,18 @@
+<h2>{{ quiz.title }}</h2>
+<p>{{ question.text }}</p>
+
+<ul>
+  {% for c in question.choices.all %}
+    <li>
+      <form method="post" style="display:inline;">
+        {% csrf_token %}
+        <input type="hidden" name="choice_id" value="{{ c.id }}">
+        <button type="submit">{{ c.text }}</button>
+      </form>
+    </li>
+  {% endfor %}
+</ul>
+
+{% if result %}
+  <p><strong>{{ result }}</strong></p>
+{% endif %}
