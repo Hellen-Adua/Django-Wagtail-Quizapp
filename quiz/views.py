@@ -1,13 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 
 # Create your views here.
-from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.http import require_http_methods
 from .models import Quiz, Question, Choice
 from .forms import AnswerForm
 
 def quiz_list(request):
-    return render(request, "quiz/templates/quiz/quiz_list.html", {"quizzes": Quiz.objects.all()})
+    return render(request, "quiz/quiz_list.html", {"quizzes": Quiz.objects.all()})
 
 @require_http_methods(["GET", "POST"])
 def take_quiz(request, quiz_id):
