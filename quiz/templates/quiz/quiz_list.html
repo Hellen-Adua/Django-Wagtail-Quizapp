@@ -1,8 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
 <h1>Quizzes</h1>
 <ul>
-  {% for q in quizzes %}
-    <li><a href="{% url 'take_quiz' q.id %}">{{ q.title }}</a></li>
+  {% for quiz in quizzes %}
+    <li>
+      <a href="{% url 'take_quiz' quiz.id %}">{{ quiz.title }}</a>
+      <small>— {{ quiz.category.full_path }}</small>
+    </li>
   {% empty %}
     <li>No quizzes yet.</li>
   {% endfor %}
 </ul>
+
+<p><a href="{% url 'my_results' %}">My past results</a></p>
+{% endblock %}

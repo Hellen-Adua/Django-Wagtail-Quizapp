@@ -1,0 +1,34 @@
+{% for question in questions %}
+  <div class="question-block mb-4 p-3 border rounded">
+    <h3>{{ forloop.counter }}. {{ question.text }}</h3>
+
+    <ul>
+      {% for choice in question.choice_set.all %}
+        <li class="{% if choice.is_correct %}correct-choice{% else %}wrong-choice{% endif %}">
+          {{ choice.text }}
+          {% if user_answers|get_item:question.id == choice.id %}
+            <span style="color: blue;">(Your choice)</span>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+
+    <!-- Toggle button -->
+    <button class="btn btn-sm btn-outline-primary mt-2" 
+            type="button" 
+            data-bs-toggle="collapse" 
+            data-bs-target="#explanation-{{ question.id }}">
+      Show/Hide Explanations
+    </button>
+
+    <!-- Collapsible section -->
+    <div class="collapse mt-2" id="explanation-{{ question.id }}">
+      {% for choice in question.choice_set.all %}
+        <div class="p-2 {% if choice.is_correct %}bg-success text-white{% else %}bg-light{% endif %} rounded mb-1">
+          <strong>{{ choice.text }}</strong><br>
+          <em>{{ choice.explanation }}</em>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endfor %}

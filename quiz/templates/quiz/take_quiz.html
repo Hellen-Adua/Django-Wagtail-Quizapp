@@ -1,18 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+  .question-block{margin-bottom:1.25rem;padding:1rem;border:1px solid #eee;border-radius:8px}
+  .choice{display:block;margin:.25rem 0}
+</style>
+
 <h2>{{ quiz.title }}</h2>
-<p>{{ question.text }}</p>
+<p><em>Category:</em> {{ quiz.category.full_path }}</p>
 
-<ul>
-  {% for c in question.choices.all %}
-    <li>
-      <form method="post" style="display:inline;">
-        {% csrf_token %}
-        <input type="hidden" name="choice_id" value="{{ c.id }}">
-        <button type="submit">{{ c.text }}</button>
-      </form>
-    </li>
+<form method="post">
+  {% csrf_token %}
+  {% for question in questions %}
+    <div class="question-block">
+      <p><strong>{{ forloop.counter }}.</strong> {{ question.text }}</p>
+      {% for choice in question.choices.all %}
+        <label class="choice">
+          <input type="radio" name="q_{{ question.id }}" value="{{ choice.id }}">
+          <strong>{% cycle 'A' 'B' 'C' 'D' %}.</strong> {{ choice.text }}
+        </label>
+      {% endfor %}
+    </div>
   {% endfor %}
-</ul>
 
-{% if result %}
-  <p><strong>{{ result }}</strong></p>
-{% endif %}
+  <button type="submit">Submit</button>
+</form>
+{% endblock %}

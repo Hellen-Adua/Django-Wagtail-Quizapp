@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+  .question-block {
+    margin: 1rem 0;
+    padding: 1rem;
+    border: 1px solid #eee;
+    border-radius: 8px;
+  }
+  .option {
+    margin: .25rem 0;
+  }
+  .correct {
+    color: green;
+    font-weight: 600;
+  }
+  .wrong {
+    color: #c0392b;
+    font-weight: 600;
+  }
+  .explanation {
+    margin: .25rem 0 .75rem;
+    color: #555;
+  }
+</style>
+
+<h2>Results: {{ quiz.title }}</h2>
+<p><strong>Score:</strong> {{ result.score }} / {{ result.total }}</p>
+<p><a href="{% url 'my_results' %}">← Back to my results</a></p>
+
+{% for block in question_blocks %}
+  <div class="question-block">
+    <p><strong>{{ forloop.counter }}.</strong> {{ block.question.text }}</p>
+
+    {% for choice in block.choices %}
+      {% if choice == block.correct_choice %}
+        <div class="option correct">
+          <strong>{% cycle 'A' 'B' 'C' 'D' %}.</strong> {{ choice.text }} — Correct
+        </div>
+        {% if choice.explanation %}
+          <div class="explanation"><em>{{ choice.explanation }}</em></div>
+        {% elif block.question.correct_explanation %}
+          <div class="explanation"><em>{{ block.question.correct_explanation }}</em></div>
+        {% endif %}
+      {% elif choice == block.selected_choice %}
+        <div class="option wrong">
+          <strong>{% cycle 'A' 'B' 'C' 'D' %}.</strong> {{ choice.text }} — Your choice (Wrong)
+        </div>
+        {% if choice.explanation %}
+          <div class="explanation"><em>{{ choice.explanation }}</em></div>
+        {% endif %}
+      {% else %}
+        <div class="option">
+          <strong>{% cycle 'A' 'B' 'C' 'D' %}.</strong> {{ choice.text }}
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+{% endfor %}
+
+{% endblock %}

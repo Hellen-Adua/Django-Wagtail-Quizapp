@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      line-height: 1.6;
+    }
+    header, footer {
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+    nav a {
+      margin: 0 0.5rem;
+      text-decoration: none;
+      color: #3498db;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Quiz App</h1>
+    <nav>
+      <a href="{% url 'quiz_list' %}">Quizzes</a>
+      <a href="{% url 'my_results' %}">My Results</a>
+      {% if user.is_authenticated %}
+        <span>Welcome, {{ user.username }}!</span>
+        <a href="{% url 'logout' %}">Logout</a>
+      {% else %}
+        <a href="{% url 'login' %}">Login</a>
+        <a href="{% url 'signup' %}">Sign Up</a>
+      {% endif %}
+    </nav>
+  </header>
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer>
+    <p>&copy; {{ year|default:2025 }} Quiz App</p>
+  </footer>
+</body>
+</html>

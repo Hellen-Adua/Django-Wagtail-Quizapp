@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>My Results</h2>
+<ul>
+  {% for result in user_results %}
+    <li>
+      {{ result.taken_at|date:"Y-m-d H:i" }} — {{ result.quiz.title }}:
+      <strong>{{ result.score }}/{{ result.total }}</strong>
+      <a href="{% url 'quiz_result' result.id %}">View</a>
+    </li>
+  {% empty %}
+    <li>No attempts yet.</li>
+  {% endfor %}
+</ul>
+{% endblock %}
